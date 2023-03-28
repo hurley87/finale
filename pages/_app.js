@@ -7,12 +7,6 @@ import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { Toaster } from 'react-hot-toast';
 import { baseGoerli } from 'wagmi/chains';
 
-// const http =
-//   'https://spring-young-tent.ethereum-sepolia.quiknode.pro/828de30c760b7c7568ceabb66fed417ec80799fd/';
-
-// const http =
-//   'https://clean-tame-gas.quiknode.pro/af85a689127d1541d0fd7e70029e3c2a8203fe3a/';
-
 const http =
   'https://little-shy-feather.base-goerli.quiknode.pro/9ce46bdf099312e0e1cc22733b022d7f1455a600/';
 
