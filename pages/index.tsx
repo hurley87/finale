@@ -3,6 +3,7 @@ import { useSigner } from 'wagmi';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useEffect, useState } from 'react';
 import useFinaleContract from '@/hooks/useFinaleContract';
+import FinaleMint from '@/component/FinaleMint';
 
 export default function Home() {
   const { data: signer } = useSigner();
@@ -22,7 +23,7 @@ export default function Home() {
   return (
     <Box>
       <ConnectButton />
-      {signer && isAllowed && <Box>Form</Box>}
+      {signer && isAllowed && <FinaleMint />}
       {signer && !isAllowed && <Box>Not on the list</Box>}
     </Box>
   );

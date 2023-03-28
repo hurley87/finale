@@ -10,7 +10,21 @@ contract Finale is ERC721, ERC721URIStorage {
     using Counters for Counters.Counter;
     Counters.Counter private currentTokenId;
 
+    struct Collector {
+        uint256 id;
+        uint256 tokenId;
+        string name;
+        string email;
+        string addres;
+        string prompt;
+        address creatorAddress;
+        address collectorAddress;
+    }
+
+    Collector[] public collectors;
+
     mapping(address => bool) public allowlist;
+    mapping(address => uint256) private _mintedCounts;
     address public owner;
     uint256 mintPrice = 0.023 ether;
 
@@ -20,7 +34,6 @@ contract Finale is ERC721, ERC721URIStorage {
             allowlist[_addresses[i]] = true;
         }
     }
-
 
     function addToAllowlist(address[] calldata _addresses) external {
         require(msg.sender == owner, "Only owner can add to allowlist");
@@ -53,7 +66,7 @@ contract Finale is ERC721, ERC721URIStorage {
     return super.tokenURI(tokenId);
     }
 
-    function mint(address recipient, string memory tokenURI)
+    function mint(address recipient, string memory tokenURI, string memory name, string memory email, string memory shippingAddress, string memory prompt)
         public
         virtual
         payable
@@ -61,11 +74,42 @@ contract Finale is ERC721, ERC721URIStorage {
     {
         require(msg.value >= mintPrice, "Not enough ETH sent; check price!"); 
         require(allowlist[msg.sender], "Address not on allowlist");
+        require(_mintedCounts[msg.sender] < 1, "Maximum mint per address reached");
         currentTokenId.increment();
         uint256 tokenId = currentTokenId.current();
         _safeMint(recipient, tokenId);
         _setTokenURI(tokenId, tokenURI);
 
+        uint collectorCount = collectors.length;
+        collectors.push(Collector(collectorCount, tokenId, name, email, shippingAddress, prompt, msg.sender, recipient));
+        _mintedCounts[msg.sender]++;
+
         return tokenId;
+    }
+
+    function getTotalSupply() public view returns (uint256) {
+        return currentTokenId.current();
+    }
+
+    function getCollectors() public view returns (Collector[] memory) {
+        return collectors;
+    }
+
+    function collectorExistsFromAddress(address _address) public view returns (bool) {
+        for (uint256 i = 0; i < collectors.length; i++) {
+            if (collectors[i].collectorAddress == _address) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function getCollectorTokenIdFromAddress(address _address) public view returns (uint256) {
+        for (uint256 i = 0; i < collectors.length; i++) {
+            if (collectors[i].collectorAddress == _address) {
+                return collectors[i].tokenId;
+            }
+        }
+        return 0;
     }
 }

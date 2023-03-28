@@ -7,16 +7,33 @@ const useFinaleContract = () => {
   const provider = useProvider();
   const { data: signer } = useSigner();
   const contract = useContract({
-    address: '0xD6AdBacFA17BD766c8754CE8367082Fec03CEC87',
+    address: '0xf7F99aa0536cB41080DB5CBb07fd9fcDf0c54eC4',
     abi: FinaleContract.abi,
     signerOrProvider: signer || provider,
   });
 
-  const mint = async (to: string, tokenId: string) => {
-    const tx = await contract?.mint(to, tokenId, {
-      gasLimit: ethers.utils.hexlify(1000000),
-      value: ethers.utils.parseEther('0.0023'),
-    });
+  // string memory name, string memory email, string memory shippingAddress, string memory prompt
+
+  const mint = async (
+    to: string,
+    tokenId: string,
+    name: string,
+    email: string,
+    shippingAddress: string,
+    prompt: string
+  ) => {
+    const tx = await contract?.mint(
+      to,
+      tokenId,
+      name,
+      email,
+      shippingAddress,
+      prompt,
+      {
+        gasLimit: ethers.utils.hexlify(1000000),
+        value: ethers.utils.parseEther('0.023'),
+      }
+    );
     const receipt = await tx?.wait();
     return receipt;
   };
@@ -29,8 +46,18 @@ const useFinaleContract = () => {
   // create function that returns total supple of NFTs that have been minted
   // create function that returns the total supply of NFTs that have been minted by a specific address
   const totalSupply = async () => {
-    const totalSupply = await contract?.totalSupply();
+    const totalSupply = await contract?.getTotalSupply();
     return totalSupply;
+  };
+
+  const getCollectors = async () => {
+    const collectors = await contract?.getCollectors();
+    return collectors;
+  };
+
+  const collectorExistsFromAddress = async (address: string) => {
+    const exists = await contract?.collectorExistsFromAddress(address);
+    return exists;
   };
 
   return {
@@ -38,6 +65,8 @@ const useFinaleContract = () => {
     totalSupply,
     isAllowed,
     mint,
+    collectorExistsFromAddress,
+    getCollectors,
   };
 };
 
