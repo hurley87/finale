@@ -1,8 +1,10 @@
-import hre from 'hardhat';
+import '@nomiclabs/hardhat-waffle';
+import { ethers } from 'hardhat';
+
 import { allowlist } from './allowlist';
 
 async function main() {
-  const NFT = await hre.ethers.getContractFactory('Finale');
+  const NFT = await ethers.getContractFactory('Finale');
   const nft = await NFT.deploy(allowlist);
 
   await nft.deployed();
