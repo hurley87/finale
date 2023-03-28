@@ -23,7 +23,8 @@
     "**/*.ts",
     "**/*.tsx",
     "pages/_app.js",
-    "hardhat-ts/*"
+    "hardhat-ts/*",
+    "hardhat-ts/scripts/deploy.js"
   ],
   "exclude": ["node_modules"]
 }
