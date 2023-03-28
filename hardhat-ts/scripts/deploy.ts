@@ -1,16 +1,16 @@
-import hre from 'hardhat';
-import { allowlist } from './allowlist';
+// import hre from 'hardhat';
+// import { allowlist } from './allowlist';
 
-async function main() {
-  const NFT = await hre.ethers.getContractFactory('Finale');
-  const nft = await NFT.deploy(allowlist);
+// async function main() {
+//   const NFT = await hre.ethers.getContractFactory('Finale');
+//   const nft = await NFT.deploy(allowlist);
 
-  await nft.deployed();
+//   await nft.deployed();
 
-  console.log('NFT Contract Deployed at ' + nft.address);
-}
+//   console.log('NFT Contract Deployed at ' + nft.address);
+// }
 
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+// main().catch((error) => {
+//   console.error(error);
+//   process.exitCode = 1;
+// });
