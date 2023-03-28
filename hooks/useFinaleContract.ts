@@ -20,7 +20,7 @@ const useFinaleContract = () => {
     name: string,
     email: string,
     shippingAddress: string,
-    prompt: string
+    items: string
   ) => {
     const tx = await contract?.mint(
       to,
@@ -28,7 +28,7 @@ const useFinaleContract = () => {
       name,
       email,
       shippingAddress,
-      prompt,
+      items,
       {
         gasLimit: ethers.utils.hexlify(1000000),
         value: ethers.utils.parseEther('0.023'),

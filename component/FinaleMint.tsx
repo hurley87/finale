@@ -142,7 +142,7 @@ const FinaleMint: NextPage = () => {
           name,
           email,
           shippingAddress,
-          prompt
+          items.join(', ')
         );
         console.log('Transaction: ', transaction.transactionHash);
         setTransactionHash(transaction.transactionHash);

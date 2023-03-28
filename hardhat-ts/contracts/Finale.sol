@@ -11,13 +11,11 @@ contract Finale is ERC721, ERC721URIStorage {
     Counters.Counter private currentTokenId;
 
     struct Collector {
-        uint256 id;
         uint256 tokenId;
         string name;
         string email;
         string addres;
-        string prompt;
-        address creatorAddress;
+        string items;
         address collectorAddress;
     }
 
@@ -66,7 +64,7 @@ contract Finale is ERC721, ERC721URIStorage {
     return super.tokenURI(tokenId);
     }
 
-    function mint(address recipient, string memory tokenURI, string memory name, string memory email, string memory shippingAddress, string memory prompt)
+    function mint(address recipient, string memory tokenURI, string memory name, string memory email, string memory shippingAddress, string memory items)
         public
         virtual
         payable
@@ -80,8 +78,7 @@ contract Finale is ERC721, ERC721URIStorage {
         _safeMint(recipient, tokenId);
         _setTokenURI(tokenId, tokenURI);
 
-        uint collectorCount = collectors.length;
-        collectors.push(Collector(collectorCount, tokenId, name, email, shippingAddress, prompt, msg.sender, recipient));
+        collectors.push(Collector(tokenId, name, email, shippingAddress, items, recipient));
         _mintedCounts[msg.sender]++;
 
         return tokenId;
