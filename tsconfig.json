@@ -23,8 +23,10 @@
     "**/*.ts",
     "**/*.tsx",
     "pages/_app.js",
+    "hardhat-ts/hardhat.config.ts",
     "hardhat-ts/*",
     "hardhat-ts/scripts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "files": ["hardhat-ts/hardhat.config.ts"]
 }
