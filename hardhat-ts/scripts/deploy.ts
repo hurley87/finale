@@ -1,4 +1,6 @@
-import { ethers } from 'hardhat';
+import hre from 'hardhat';
+
+const { ethers } = hre;
 
 async function main() {
   const NFT = await ethers.getContractFactory('Finale');
