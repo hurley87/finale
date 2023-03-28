@@ -1,8 +1,8 @@
-import { ethers } from 'hardhat';
+import hre from 'hardhat';
 import { allowlist } from './allowlist';
 
 async function main() {
-  const NFT = await ethers.getContractFactory('Finale');
+  const NFT = await hre.ethers.getContractFactory('Finale');
   const nft = await NFT.deploy(allowlist);
 
   await nft.deployed();
