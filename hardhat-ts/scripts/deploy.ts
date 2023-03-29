@@ -1,5 +1,6 @@
+import '@nomiclabs/hardhat-waffle';
 require('@nomiclabs/hardhat-ethers');
-import { ethers } from 'hardhat';
+// import { ethers } from 'hardhat';
 
 import { allowlist } from './allowlist';
 
