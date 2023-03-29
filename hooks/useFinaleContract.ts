@@ -7,12 +7,10 @@ const useFinaleContract = () => {
   const provider = useProvider();
   const { data: signer } = useSigner();
   const contract = useContract({
-    address: '0xf7F99aa0536cB41080DB5CBb07fd9fcDf0c54eC4',
+    address: '0x5541C47aF64a95D7Ace4d49a4913AC48eCF427C1',
     abi: FinaleContract.abi,
     signerOrProvider: signer || provider,
   });
-
-  // string memory name, string memory email, string memory shippingAddress, string memory prompt
 
   const mint = async (
     to: string,
@@ -60,12 +58,18 @@ const useFinaleContract = () => {
     return exists;
   };
 
+  const getCollectorTokenIdFromAddress = async (address: string) => {
+    const tokenId = await contract?.getCollectorTokenIdFromAddress(address);
+    return tokenId;
+  };
+
   return {
     contract,
     totalSupply,
     isAllowed,
     mint,
     collectorExistsFromAddress,
+    getCollectorTokenIdFromAddress,
     getCollectors,
   };
 };

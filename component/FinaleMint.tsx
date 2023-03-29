@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import type { NextPage } from 'next';
 import { create } from 'ipfs-http-client';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 import useFinaleContract from '@/hooks/useFinaleContract';
 import toast from 'react-hot-toast';
@@ -53,22 +53,55 @@ const FinaleMint: NextPage = () => {
   const [img, setImg] = useState('');
   const [items, setItems] = useState<any>([]);
   const [hasMinted, setHasMinted] = useState(false);
+  const [nft, setNFT] = useState<any>(null);
+  const [loaded, setLoaded] = useState(false);
 
-  //   get total supply on load in useEffect
-  useEffect(() => {
-    async function init() {
-      const totalSupply = await contract?.totalSupply();
-      const supply = totalSupply.toNumber();
-      setTotalSupply(supply);
-
-      const collectorAddress = address as string;
-      const hasMinted = await contract?.collectorExistsFromAddress(
-        collectorAddress
-      );
-      setHasMinted(hasMinted);
+  const getFromIPFS = async (cid: string) => {
+    const decoder = new TextDecoder();
+    let content = '';
+    for await (const chunk of ipfs.cat(cid)) {
+      content += decoder.decode(chunk);
     }
-    init();
-  }, [contract]);
+    return content;
+  };
+
+  const init = useCallback(async () => {
+    const totalSupply = await contract?.totalSupply();
+    const supply = totalSupply.toNumber();
+    setTotalSupply(supply);
+
+    const collectorAddress = address as string;
+    const hasMinted = await contract?.collectorExistsFromAddress(
+      collectorAddress
+    );
+    setHasMinted(hasMinted);
+    if (hasMinted) getNFT();
+    setLoaded(true);
+  }, [contract, address, setTotalSupply, setHasMinted, setLoaded]);
+
+  useEffect(() => {
+    if (!loaded) init();
+  }, [init, loaded]);
+
+  const getNFT = useCallback(async () => {
+    const collectorAddress = address as string;
+    const tokedId = await contract?.getCollectorTokenIdFromAddress(
+      collectorAddress
+    );
+    const tokenId = tokedId.toNumber();
+    const tokenURI = await contract?.contract?.tokenURI(tokenId);
+    const ipfsHash = tokenURI.replace('https://ipfs.io/ipfs/', '');
+
+    const content = await getFromIPFS(ipfsHash);
+
+    try {
+      const ipfsObject = JSON.parse(content);
+      console.log(ipfsObject);
+      setNFT(ipfsObject);
+    } catch (e) {
+      console.log(e);
+    }
+  }, [contract, address, setNFT]);
 
   function getItems() {
     if (boxType === 'Default') {
@@ -132,8 +165,6 @@ const FinaleMint: NextPage = () => {
     console.log('Uploaded Hash: ', uploaded);
     const path = uploaded.path;
 
-    // string memory name, string memory email, string memory shippingAddress, string memory prompt
-
     try {
       if (address) {
         const transaction = await contract.mint(
@@ -148,6 +179,7 @@ const FinaleMint: NextPage = () => {
         setTransactionHash(transaction.transactionHash);
         toast.success('NFT minted!');
         setTotalSupply(totalSupply + 1);
+        setHasMinted(true);
       }
       setIsMinting(false);
     } catch (e) {
@@ -157,8 +189,13 @@ const FinaleMint: NextPage = () => {
     }
   };
 
+  console.log('NFT: ', nft);
+
   return hasMinted ? (
-    <Box>You have minted alreday</Box>
+    <Stack gap="4" maxW="lg" mx="auto" pt="10">
+      <Text>{nft?.description}</Text>
+      <Image alt="nft image" src={nft?.image} />
+    </Stack>
   ) : (
     <Stack gap="4" maxW="lg" mx="auto" pt="10">
       {transactionHash === '' ? (
