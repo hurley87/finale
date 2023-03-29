@@ -65,24 +65,6 @@ const FinaleMint: NextPage = () => {
     return content;
   };
 
-  const init = useCallback(async () => {
-    const totalSupply = await contract?.totalSupply();
-    const supply = totalSupply.toNumber();
-    setTotalSupply(supply);
-
-    const collectorAddress = address as string;
-    const hasMinted = await contract?.collectorExistsFromAddress(
-      collectorAddress
-    );
-    setHasMinted(hasMinted);
-    if (hasMinted) getNFT();
-    setLoaded(true);
-  }, [contract, address, setTotalSupply, setHasMinted, setLoaded]);
-
-  useEffect(() => {
-    if (!loaded) init();
-  }, [init, loaded]);
-
   const getNFT = useCallback(async () => {
     const collectorAddress = address as string;
     const tokedId = await contract?.getCollectorTokenIdFromAddress(
@@ -102,6 +84,24 @@ const FinaleMint: NextPage = () => {
       console.log(e);
     }
   }, [contract, address, setNFT]);
+
+  const init = useCallback(async () => {
+    const totalSupply = await contract?.totalSupply();
+    const supply = totalSupply.toNumber();
+    setTotalSupply(supply);
+
+    const collectorAddress = address as string;
+    const hasMinted = await contract?.collectorExistsFromAddress(
+      collectorAddress
+    );
+    setHasMinted(hasMinted);
+    if (hasMinted) getNFT();
+    setLoaded(true);
+  }, [contract, address, setTotalSupply, setHasMinted, setLoaded, getNFT]);
+
+  useEffect(() => {
+    if (!loaded) init();
+  }, [init, loaded]);
 
   function getItems() {
     if (boxType === 'Default') {
@@ -264,7 +264,11 @@ const FinaleMint: NextPage = () => {
           View Transaction
         </Button>
       ) : (
-        <Button isLoading={isMinting} onClick={handleMint}>
+        <Button
+          isLoading={isMinting}
+          onClick={handleMint}
+          isDisabled={name === '' || email === '' || shippingAddress === ''}
+        >
           Mint - 0.023 ETH
         </Button>
       )}
