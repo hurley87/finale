@@ -1,7 +1,7 @@
 require('@nomiclabs/hardhat-ethers');
-// import { ethers } from 'hardhat';
+import { ethers } from 'hardhat';
 
-// import { allowlist } from './allowlist';
+import { allowlist } from './allowlist';
 
 async function main() {
   // const NFT = await ethers.getContractFactory('Finale');
