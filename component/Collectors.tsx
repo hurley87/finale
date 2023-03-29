@@ -52,11 +52,7 @@ const Collectors: NextPage = () => {
                 <Td>{collector.name}</Td>
                 <Td>{collector.email}</Td>
                 <Td>{collector.addres}</Td>
-                <Td>
-                  {collector.prompt
-                    .split(' spilling ')[0]
-                    .replace('An open chest containing a ', '')}
-                </Td>
+                <Td>{collector.items}</Td>
 
                 <Td>{collector.collectorAddress}</Td>
               </Tr>
