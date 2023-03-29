@@ -7,7 +7,7 @@ const useFinaleContract = () => {
   const provider = useProvider();
   const { data: signer } = useSigner();
   const contract = useContract({
-    address: '0x5541C47aF64a95D7Ace4d49a4913AC48eCF427C1',
+    address: '0x40e29ec25E33f946f69e64F2A63b92494E733650',
     abi: FinaleContract.abi,
     signerOrProvider: signer || provider,
   });

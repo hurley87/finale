@@ -177,6 +177,7 @@ const FinaleMint: NextPage = () => {
         );
         console.log('Transaction: ', transaction.transactionHash);
         setTransactionHash(transaction.transactionHash);
+        getNFT();
         toast.success('NFT minted!');
         setTotalSupply(totalSupply + 1);
         setHasMinted(true);
@@ -192,12 +193,12 @@ const FinaleMint: NextPage = () => {
   console.log('NFT: ', nft);
 
   return hasMinted ? (
-    <Stack gap="4" maxW="lg" mx="auto" pt="10">
+    <Stack>
       <Text>{nft?.description}</Text>
       <Image alt="nft image" src={nft?.image} />
     </Stack>
   ) : (
-    <Stack gap="4" maxW="lg" mx="auto" pt="10">
+    <Stack>
       {transactionHash === '' ? (
         <Stack>
           <Stack>

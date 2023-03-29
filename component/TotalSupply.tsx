@@ -8,10 +8,10 @@ const TotalSupply: NextPage = () => {
   const [totalSupply, setTotalSupply] = useState(0);
   const [countdown, setCountdown] = useState('');
 
-  // crete a function that is a countdown to march 31st, 2023 at midnight in the format 5d 3h 59m 45s
+  // crete a function that is a countdown to april 14th, 2023 at midnight in the format 5d 3h 59m 45s
   const formatCountdown = () => {
     const now = new Date();
-    const march31st2023 = new Date('March 31, 2023 00:00:00');
+    const march31st2023 = new Date('April 14th, 2023 00:00:00');
     const diff = march31st2023.getTime() - now.getTime();
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));

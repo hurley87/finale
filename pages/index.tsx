@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react';
+import { Stack, Box } from '@chakra-ui/react';
 import { useSigner } from 'wagmi';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useEffect, useState } from 'react';
@@ -21,10 +21,10 @@ export default function Home() {
   }, [contract, signer]);
 
   return (
-    <Box>
+    <Stack gap="4" maxW="lg" mx="auto" pt="10">
       <ConnectButton />
       {signer && isAllowed && <FinaleMint />}
       {signer && !isAllowed && <Box>Not on the list</Box>}
-    </Box>
+    </Stack>
   );
 }

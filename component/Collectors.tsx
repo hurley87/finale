@@ -28,13 +28,10 @@ const Collectors: NextPage = () => {
     if (!done) init();
   }, [contract, done]);
 
-  console.log(collectors);
-
   return (
     <Stack gap="4" pt="10" w="95%" mx="auto">
       <TableContainer>
         <Table>
-          <TableCaption>Collectors</TableCaption>
           <Thead>
             <Tr>
               <Th>Token Id</Th>
